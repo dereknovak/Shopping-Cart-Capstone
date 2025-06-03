@@ -1,6 +1,17 @@
 import CartItem from './CartItem';
+import { mockCart } from '../mockData/data.ts';
+import { useEffect, useState } from 'react';
+import type { Cart } from '../types.js';
 
 const Cart = () => {
+  const [cartData, setCartData] = useState<Cart>([]);
+
+  useEffect(() => {
+    setCartData(mockCart);
+  }, []);
+
+  const totalCost = () => cartData.reduce((acc, item) => acc + item.price, 0);
+
   return (
     <div className="cart">
       <h2>Your Cart</h2>
@@ -13,17 +24,19 @@ const Cart = () => {
           </tr>
         </thead>
         <tbody>
-          <CartItem name="Amazon Kindle E-reader" quantity={2} price={79.99} />
-          <CartItem
-            name="Apple 10.5-Inch iPad Pro"
-            quantity={1}
-            price={649.99}
-          />
+          {cartData.map((item) => (
+            <CartItem
+              key={item._id}
+              name={item.title}
+              quantity={item.quantity}
+              price={item.price}
+            />
+          ))}
         </tbody>
         <tfoot>
           <tr>
             <td colSpan={3} className="total">
-              Total: $729.98
+              Total: ${totalCost()}
             </td>
           </tr>
         </tfoot>
