@@ -5,8 +5,8 @@ import type { ProductType } from '../types';
 type ProductProps = Omit<ProductType, '_id'>;
 
 const Product = ({ title, price, quantity }: ProductProps) => {
-  const [editVisibility, setEditVisibility] = useState(false);
-  const toggleEditVisibility = () => setEditVisibility(!editVisibility);
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const openEditForm = () => setIsEditFormVisible(true);
 
   return (
     <li className="product">
@@ -16,19 +16,22 @@ const Product = ({ title, price, quantity }: ProductProps) => {
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
           <button className="add-to-cart">Add to Cart</button>
-          <button className="edit" onClick={toggleEditVisibility}>
+          <button className="edit" onClick={openEditForm}>
             Edit
           </button>
         </div>
         <button className="delete-button">
           <span>X</span>
         </button>
-        <EditForm
-          editVisibility={editVisibility}
-          name={name}
-          price={price}
-          quantity={quantity}
-        />
+
+        {isEditFormVisible && (
+          <EditForm
+            title={title}
+            price={price}
+            quantity={quantity}
+            setIsEditFormVisible={setIsEditFormVisible}
+          />
+        )}
       </div>
     </li>
   );
