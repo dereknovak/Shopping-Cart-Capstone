@@ -1,27 +1,50 @@
-import type { ProductType } from '../types';
+import { useState, type ChangeEvent, type SyntheticEvent } from 'react';
+import type { ProductType, FormInput } from '../types';
 
-interface EditFormProps extends Omit<ProductType, '_id'> {
+interface EditFormProps {
+  product: ProductType;
+  onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
   setIsEditFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditForm = ({
-  title,
-  price,
-  quantity,
+  product,
+  onUpdate,
   setIsEditFormVisible,
 }: EditFormProps) => {
+  const [data, setData] = useState({
+    title: product.title,
+    price: String(product.price),
+    quantity: String(product.quantity),
+  });
   const closeEditForm = () => setIsEditFormVisible(false);
+
+  const handleUpdate = (e: SyntheticEvent) => {
+    e.preventDefault();
+    onUpdate(product._id, data);
+    closeEditForm();
+  };
+
+  const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
-      <form>
+      <form onSubmit={handleUpdate}>
         <div className="input-group">
           <label htmlFor="product-name">Product Name</label>
           <input
             type="text"
             id="product-name"
-            value={title}
+            name="title"
+            value={data.title}
+            onChange={handleDataChange}
             aria-label="Product Name"
           />
         </div>
@@ -31,7 +54,9 @@ const EditForm = ({
           <input
             type="number"
             id="product-price"
-            value={price}
+            name="price"
+            value={data.price}
+            onChange={handleDataChange}
             aria-label="Product Price"
           />
         </div>
@@ -41,7 +66,9 @@ const EditForm = ({
           <input
             type="number"
             id="product-quantity"
-            value={quantity}
+            name="quantity"
+            value={data.quantity}
+            onChange={handleDataChange}
             aria-label="Product Quantity"
           />
         </div>

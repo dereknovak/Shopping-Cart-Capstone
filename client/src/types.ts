@@ -5,6 +5,15 @@ export interface ProductType {
   price: number;
 }
 
+export interface FormInput {
+  title: string;
+  price: string;
+  quantity: string;
+}
+
+export type NewProduct = Omit<ProductType, '_id'>;
+export type UpdatedProduct = NewProduct;
+
 export type Products = ProductType[];
 
 export interface CartItem extends ProductType {

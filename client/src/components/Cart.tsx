@@ -1,13 +1,16 @@
 import CartItem from './CartItem';
-import { mockCart } from '../mockData/data.ts';
 import { useEffect, useState } from 'react';
 import type { Cart } from '../types.js';
+import { getCart } from '../services/products.ts';
 
 const Cart = () => {
   const [cartData, setCartData] = useState<Cart>([]);
 
   useEffect(() => {
-    setCartData(mockCart);
+    (async () => {
+      const data = await getCart();
+      setCartData(data);
+    })();
   }, []);
 
   const totalCost = () => cartData.reduce((acc, item) => acc + item.price, 0);

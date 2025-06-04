@@ -1,12 +1,25 @@
 import { useState } from 'react';
 import EditForm from './EditForm';
-import type { ProductType } from '../types';
+import type { ProductType, FormInput } from '../types';
 
-type ProductProps = Omit<ProductType, '_id'>;
+interface ProductProps extends ProductType {
+  onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
+  onDelete: (productId: string) => Promise<void>;
+}
 
-const Product = ({ title, price, quantity }: ProductProps) => {
+const Product = ({
+  _id,
+  title,
+  price,
+  quantity,
+  onUpdate,
+  onDelete,
+}: ProductProps) => {
+  const product = { _id, title, price, quantity };
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const openEditForm = () => setIsEditFormVisible(true);
+
+  const handleDelete = () => onDelete(_id);
 
   return (
     <li className="product">
@@ -20,15 +33,14 @@ const Product = ({ title, price, quantity }: ProductProps) => {
             Edit
           </button>
         </div>
-        <button className="delete-button">
+        <button className="delete-button" onClick={handleDelete}>
           <span>X</span>
         </button>
 
         {isEditFormVisible && (
           <EditForm
-            title={title}
-            price={price}
-            quantity={quantity}
+            product={product}
+            onUpdate={onUpdate}
             setIsEditFormVisible={setIsEditFormVisible}
           />
         )}

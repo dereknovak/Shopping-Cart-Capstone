@@ -1,16 +1,20 @@
 import Product from './Product';
-import { mockProducts } from '../mockData/data.ts';
-import { useEffect, useState } from 'react';
+import type { Products, FormInput } from '../types.js';
 
-import type { Products } from '../types.js';
+interface ProductListingProps {
+  products: Products;
+  onProductUpdate: (
+    productId: string,
+    updatedProduct: FormInput
+  ) => Promise<void>;
+  onProductDelete: (productId: string) => Promise<void>;
+}
 
-const ProductListing = () => {
-  const [products, setProducts] = useState<Products>([]);
-
-  useEffect(() => {
-    setProducts(mockProducts);
-  }, []);
-
+const ProductListing = ({
+  products,
+  onProductUpdate,
+  onProductDelete,
+}: ProductListingProps) => {
   return (
     <div className="product-listing">
       <h2>Products</h2>
@@ -18,9 +22,9 @@ const ProductListing = () => {
         {products.map((product) => (
           <Product
             key={product._id}
-            title={product.title}
-            price={product.price}
-            quantity={product.quantity}
+            {...product}
+            onUpdate={onProductUpdate}
+            onDelete={onProductDelete}
           />
         ))}
       </ul>
