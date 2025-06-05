@@ -1,10 +1,10 @@
 import CartItem from './CartItem';
 import { useEffect, useState } from 'react';
-import type { Cart } from '../types.js';
+import type { CartType } from '../types.js';
 import { getCart } from '../services/products.ts';
 
 const Cart = () => {
-  const [cartData, setCartData] = useState<Cart>([]);
+  const [cartData, setCartData] = useState<CartType>([]);
 
   useEffect(() => {
     (async () => {

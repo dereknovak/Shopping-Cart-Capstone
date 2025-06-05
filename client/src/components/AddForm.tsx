@@ -8,13 +8,12 @@ export const emptyInputForm = {
 };
 
 interface AddFormProps {
+  toggleVisibility: () => void;
   onSubmit: (newProduct: FormInput) => Promise<void>;
 }
 
-const AddForm = ({ onSubmit }: AddFormProps) => {
+const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
   const [data, setData] = useState<FormInput>(emptyInputForm);
-  const [formVisibility, setFormVisibility] = useState(false);
-  const toggleVisibility = () => setFormVisibility(!formVisibility);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -29,12 +28,7 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
   };
 
   return (
-    <div className={`add-form${formVisibility ? ' visible' : ''}`}>
-      <p>
-        <button className={`add-product-button`} onClick={toggleVisibility}>
-          Add A Product
-        </button>
-      </p>
+    <div className="add-form">
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="product-name">Product Name:</label>
@@ -64,7 +58,7 @@ const AddForm = ({ onSubmit }: AddFormProps) => {
           <label htmlFor="product-quantity">Quantity:</label>
           <input
             type="number"
-            id="quantity"
+            id="product-quantity"
             name="quantity"
             min="0"
             value={data.quantity}

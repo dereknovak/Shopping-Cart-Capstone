@@ -3,17 +3,14 @@ import type { Products, FormInput } from '../types.js';
 
 interface ProductListingProps {
   products: Products;
-  onProductUpdate: (
-    productId: string,
-    updatedProduct: FormInput
-  ) => Promise<void>;
-  onProductDelete: (productId: string) => Promise<void>;
+  onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
+  onDelete: (productId: string) => Promise<void>;
 }
 
 const ProductListing = ({
   products,
-  onProductUpdate,
-  onProductDelete,
+  onUpdate,
+  onDelete,
 }: ProductListingProps) => {
   return (
     <div className="product-listing">
@@ -23,8 +20,8 @@ const ProductListing = ({
           <Product
             key={product._id}
             {...product}
-            onUpdate={onProductUpdate}
-            onDelete={onProductDelete}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
           />
         ))}
       </ul>

@@ -24,4 +24,4 @@ export interface CartItem extends ProductType {
   productId: string;
 }
 
-export type Cart = CartItem[];
+export type CartType = CartItem[];

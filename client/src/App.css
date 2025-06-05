@@ -169,20 +169,6 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.add-form h3,
-.add-form form {
-  display: none;
-}
-
-.add-form.visible .add-product-button {
-  display: none;
-}
-
-.add-form.visible h3,
-.add-form.visible form {
-  display: block;
-}
-
 table td,
 th {
   text-align: center;

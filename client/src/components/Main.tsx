@@ -1,76 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import type { FormInput, Products } from '../types';
 import AddForm from './AddForm';
 import ProductListing from './ProductListing';
-import type { FormInput, Products } from '../types';
-import {
-  createProduct,
-  deleteProduct,
-  getProducts,
-  updateProduct,
-} from '../services/products';
+import AddFormButton from './AddFormButton';
 
-const Main = () => {
-  const [products, setProducts] = useState<Products>([]);
+interface MainProps {
+  products: Products;
+  onSubmit: (newProduct: FormInput) => Promise<void>;
+  onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
+  onDelete: (productId: string) => Promise<void>;
+}
 
-  useEffect(() => {
-    (async () => {
-      const data = await getProducts();
-      setProducts(data);
-    })();
-  }, []);
-
-  const convertInputToData = (input: FormInput) => {
-    return {
-      title: input.title,
-      price: Number(input.price),
-      quantity: Number(input.quantity),
-    };
-  };
-
-  const handleAddFormSubmission = async (newProduct: FormInput) => {
-    try {
-      const cleanData = convertInputToData(newProduct);
-      const data = await createProduct(cleanData);
-
-      setProducts((prev) => [...prev, data]);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleProductUpdate = async (
-    productId: string,
-    updatedProduct: FormInput
-  ) => {
-    try {
-      const cleanData = convertInputToData(updatedProduct);
-      const data = await updateProduct(productId, cleanData);
-
-      setProducts((prev) =>
-        prev.map((prod) => (prod._id === productId ? data : prod))
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleProductDelete = async (productId: string) => {
-    try {
-      await deleteProduct(productId);
-      setProducts((prev) => prev.filter((prod) => prod._id !== productId));
-    } catch (e) {
-      console.log(e);
-    }
-  };
+const Main = ({ products, onSubmit, onUpdate, onDelete }: MainProps) => {
+  const [isAddFormVisible, setIsAddFormVisible] = useState(false);
+  const toggleVisibility = () => setIsAddFormVisible(!isAddFormVisible);
 
   return (
     <main>
       <ProductListing
         products={products}
-        onProductUpdate={handleProductUpdate}
-        onProductDelete={handleProductDelete}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
       />
-      <AddForm onSubmit={handleAddFormSubmission} />
+      {isAddFormVisible ? (
+        <AddForm toggleVisibility={toggleVisibility} onSubmit={onSubmit} />
+      ) : (
+        <AddFormButton toggleVisibility={toggleVisibility} />
+      )}
     </main>
   );
 };
