@@ -6,8 +6,13 @@ interface CartProps {
 }
 
 const Cart = ({ items }: CartProps) => {
-  const totalCost = () =>
-    items.reduce((acc: number, item: CartItemType) => acc + item.price, 0);
+  const totalCost = () => {
+    const total = items.reduce((acc: number, item: CartItemType) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+
+    return total.toFixed(2);
+  };
 
   return (
     <div className="cart">
