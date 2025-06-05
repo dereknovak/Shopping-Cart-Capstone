@@ -13,7 +13,7 @@ import {
   updateProduct,
 } from './services/products';
 import type { CartType, FormInput, ProductIdObject, Products } from './types';
-import { convertInputToProduct } from './utilities/utilities';
+import { convertInputToProduct, isItemInCart } from './utilities/utilities';
 
 const App = () => {
   const [products, setProducts] = useState<Products>([]);
@@ -81,11 +81,15 @@ const App = () => {
       const { product, item } = await addProductToCart(addedProduct);
       const productId = addedProduct.productId;
 
-      setCart((prev) =>
-        prev.map((cartItem) =>
-          cartItem.productId === productId ? item : cartItem
-        )
-      );
+      if (isItemInCart(cart, productId)) {
+        setCart((prev) =>
+          prev.map((cartItem) =>
+            cartItem.productId === productId ? item : cartItem
+          )
+        );
+      } else {
+        setCart((prev) => prev.concat(item));
+      }
 
       setProducts((prev) =>
         prev.map((prod) => (prod._id === productId ? product : prod))
