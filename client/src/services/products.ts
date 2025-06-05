@@ -38,6 +38,11 @@ export const getCart = async () => {
   return data;
 };
 
+export const checkoutCart = async () => {
+  const { data } = await axios.post(`${BASE_URL}/checkout`);
+  return data;
+};
+
 export const addProductToCart = async (productWithId: {
   productId: string;
 }) => {

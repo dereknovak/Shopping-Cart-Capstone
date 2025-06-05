@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Main from './components/Main';
 import {
   addProductToCart,
+  checkoutCart,
   createProduct,
   deleteProduct,
   getCart,
@@ -68,6 +69,13 @@ const App = () => {
     }
   };
 
+  const handleCheckout = async () => {
+    try {
+      await checkoutCart();
+      setCart([]);
+    } catch (e) {}
+  };
+
   const handleAddProductToCart = async (addedProduct: ProductIdObject) => {
     try {
       const { product, item } = await addProductToCart(addedProduct);
@@ -89,7 +97,7 @@ const App = () => {
 
   return (
     <div id="app">
-      <Header cart={cart} />
+      <Header cart={cart} onCheckout={handleCheckout} />
       <Main
         products={products}
         onSubmit={handleAddFormSubmission}

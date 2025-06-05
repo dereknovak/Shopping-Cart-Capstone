@@ -3,9 +3,10 @@ import CartItem from './CartItem';
 
 interface CartProps {
   items: CartType;
+  onCheckout: () => Promise<void>;
 }
 
-const Cart = ({ items }: CartProps) => {
+const Cart = ({ items, onCheckout }: CartProps) => {
   const totalCost = () => {
     const total = items.reduce((acc: number, item: CartItemType) => {
       return acc + item.price * item.quantity;
@@ -39,7 +40,9 @@ const Cart = ({ items }: CartProps) => {
         </tfoot>
       </table>
       <div className="checkout-button">
-        <button className="checkout">Checkout</button>
+        <button className="checkout" onClick={onCheckout}>
+          Checkout
+        </button>
       </div>
     </div>
   );
