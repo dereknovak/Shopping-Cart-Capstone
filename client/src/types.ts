@@ -1,9 +1,13 @@
-export interface ProductType {
-  _id: string;
-  title: string;
-  quantity: number;
-  price: number;
-}
+import z from 'zod';
+
+const productSchema = z.object({
+  _id: z.string(),
+  title: z.string(),
+  price: z.number().min(0.01),
+  quantity: z.number().min(0),
+});
+
+export type ProductType = z.infer<typeof productSchema>;
 
 export interface FormInput {
   title: string;
