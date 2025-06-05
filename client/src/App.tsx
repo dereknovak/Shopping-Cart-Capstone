@@ -4,15 +4,26 @@ import './App.css';
 import Header from './components/Header';
 import Main from './components/Main';
 import {
+  addProductToCart,
   createProduct,
   deleteProduct,
+  getCart,
   getProducts,
   updateProduct,
 } from './services/products';
-import type { FormInput, Products } from './types';
+import type { CartType, FormInput, ProductIdObject, Products } from './types';
+import { convertInputToProduct } from './utilities/utilities';
 
 const App = () => {
   const [products, setProducts] = useState<Products>([]);
+  const [cart, setCart] = useState<CartType>([]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getCart();
+      setCart(data);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -21,17 +32,9 @@ const App = () => {
     })();
   }, []);
 
-  const convertInputToData = (input: FormInput) => {
-    return {
-      title: input.title,
-      price: Number(input.price),
-      quantity: Number(input.quantity),
-    };
-  };
-
   const handleAddFormSubmission = async (newProduct: FormInput) => {
     try {
-      const cleanData = convertInputToData(newProduct);
+      const cleanData = convertInputToProduct(newProduct);
       const data = await createProduct(cleanData);
 
       setProducts((prev) => [...prev, data]);
@@ -45,7 +48,7 @@ const App = () => {
     updatedProduct: FormInput
   ) => {
     try {
-      const cleanData = convertInputToData(updatedProduct);
+      const cleanData = convertInputToProduct(updatedProduct);
       const data = await updateProduct(productId, cleanData);
 
       setProducts((prev) =>
@@ -65,14 +68,34 @@ const App = () => {
     }
   };
 
+  const handleAddProductToCart = async (addedProduct: ProductIdObject) => {
+    try {
+      const { product, item } = await addProductToCart(addedProduct);
+      const productId = addedProduct.productId;
+
+      setCart((prev) =>
+        prev.map((cartItem) =>
+          cartItem.productId === productId ? item : cartItem
+        )
+      );
+
+      setProducts((prev) =>
+        prev.map((prod) => (prod._id === productId ? product : prod))
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div id="app">
-      <Header />
+      <Header cart={cart} />
       <Main
         products={products}
         onSubmit={handleAddFormSubmission}
         onUpdate={handleProductUpdate}
         onDelete={handleProductDelete}
+        onAddToCart={handleAddProductToCart}
       />
     </div>
   );

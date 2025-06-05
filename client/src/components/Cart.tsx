@@ -1,19 +1,13 @@
+import type { CartItemType, CartType, ProductType } from '../types';
 import CartItem from './CartItem';
-import { useEffect, useState } from 'react';
-import type { CartType } from '../types.js';
-import { getCart } from '../services/products.ts';
 
-const Cart = () => {
-  const [cartData, setCartData] = useState<CartType>([]);
+interface CartProps {
+  items: CartType;
+}
 
-  useEffect(() => {
-    (async () => {
-      const data = await getCart();
-      setCartData(data);
-    })();
-  }, []);
-
-  const totalCost = () => cartData.reduce((acc, item) => acc + item.price, 0);
+const Cart = ({ items }: CartProps) => {
+  const totalCost = () =>
+    items.reduce((acc: number, item: CartItemType) => acc + item.price, 0);
 
   return (
     <div className="cart">
@@ -27,13 +21,8 @@ const Cart = () => {
           </tr>
         </thead>
         <tbody>
-          {cartData.map((item) => (
-            <CartItem
-              key={item._id}
-              name={item.title}
-              quantity={item.quantity}
-              price={item.price}
-            />
+          {items.map((item: ProductType) => (
+            <CartItem key={item._id} {...item} />
           ))}
         </tbody>
         <tfoot>

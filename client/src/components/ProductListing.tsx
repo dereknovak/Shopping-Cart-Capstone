@@ -1,16 +1,18 @@
 import Product from './Product';
-import type { Products, FormInput } from '../types.js';
+import type { Products, FormInput, ProductIdObject } from '../types.js';
 
 interface ProductListingProps {
   products: Products;
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
   onDelete: (productId: string) => Promise<void>;
+  onAddToCart: (product: ProductIdObject) => Promise<void>;
 }
 
 const ProductListing = ({
   products,
   onUpdate,
   onDelete,
+  onAddToCart,
 }: ProductListingProps) => {
   return (
     <div className="product-listing">
@@ -22,6 +24,7 @@ const ProductListing = ({
             {...product}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            onAddToCart={onAddToCart}
           />
         ))}
       </ul>

@@ -1,7 +1,11 @@
-const CartItem = ({ name, quantity, price }) => {
+import type { CartItemType } from '../types';
+
+type CartItemProps = Omit<CartItemType, '_id' | 'productId'>;
+
+const CartItem = ({ title, quantity, price }: CartItemProps) => {
   return (
     <tr>
-      <td>{name}</td>
+      <td>{title}</td>
       <td>{quantity}</td>
       <td>${price}</td>
     </tr>

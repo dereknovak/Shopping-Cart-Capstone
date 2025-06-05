@@ -1,10 +1,15 @@
+import type { CartType } from '../types';
 import Cart from './Cart';
 
-const Header = () => {
+interface HeaderProps {
+  cart: CartType;
+}
+
+const Header = ({ cart }: HeaderProps) => {
   return (
     <header>
       <h1>The Shop!</h1>
-      <Cart />
+      <Cart items={cart} />
     </header>
   );
 };

@@ -20,8 +20,12 @@ export type UpdatedProduct = NewProduct;
 
 export type Products = ProductType[];
 
-export interface CartItem extends ProductType {
+export interface CartItemType extends ProductType {
   productId: string;
 }
 
-export type CartType = CartItem[];
+export type CartType = CartItemType[];
+
+export interface ProductIdObject {
+  productId: string;
+}

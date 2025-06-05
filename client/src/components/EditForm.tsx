@@ -26,7 +26,6 @@ const EditForm = ({
   };
 
   const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setData({
       ...data,
       [e.target.name]: e.target.value,
