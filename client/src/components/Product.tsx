@@ -19,7 +19,10 @@ const Product = ({
 }: ProductProps) => {
   const product = { _id, title, price, quantity };
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+
   const openEditForm = () => setIsEditFormVisible(true);
+  const closeEditForm = () => setIsEditFormVisible(false);
+
   const handleDelete = () => onDelete(_id);
   const handleAddToCart = () => onAddToCart({ productId: _id });
 
@@ -45,7 +48,7 @@ const Product = ({
           <EditForm
             product={product}
             onUpdate={onUpdate}
-            setIsEditFormVisible={setIsEditFormVisible}
+            closeEditForm={closeEditForm}
           />
         )}
       </div>

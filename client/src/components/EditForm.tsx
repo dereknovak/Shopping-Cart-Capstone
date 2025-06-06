@@ -4,20 +4,15 @@ import type { ProductType, FormInput } from '../types';
 interface EditFormProps {
   product: ProductType;
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
-  setIsEditFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  closeEditForm: () => void;
 }
 
-const EditForm = ({
-  product,
-  onUpdate,
-  setIsEditFormVisible,
-}: EditFormProps) => {
+const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
   const [data, setData] = useState({
     title: product.title,
     price: String(product.price),
     quantity: String(product.quantity),
   });
-  const closeEditForm = () => setIsEditFormVisible(false);
 
   const handleUpdate = (e: SyntheticEvent) => {
     e.preventDefault();
