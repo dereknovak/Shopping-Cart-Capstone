@@ -13,16 +13,16 @@ interface AddFormProps {
 }
 
 const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
-  const [data, setData] = useState<FormInput>(emptyInputForm);
+  const [formData, setFormData] = useState<FormInput>(emptyInputForm);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    onSubmit(data);
+    onSubmit(formData);
   };
 
   const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
@@ -36,7 +36,7 @@ const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
             type="text"
             id="product-name"
             name="title"
-            value={data.title}
+            value={formData.title}
             onChange={handleDataChange}
             required
           />
@@ -49,7 +49,7 @@ const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
             name="price"
             min="0"
             step="0.01"
-            value={data.price}
+            value={formData.price}
             onChange={handleDataChange}
             required
           />
@@ -61,7 +61,7 @@ const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
             id="product-quantity"
             name="quantity"
             min="0"
-            value={data.quantity}
+            value={formData.quantity}
             onChange={handleDataChange}
             required
           />

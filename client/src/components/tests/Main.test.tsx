@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Main from '../Main';
 
@@ -34,4 +34,29 @@ test('Display form when Add Button is clicked', async () => {
 
   input = screen.getByRole('textbox', { name: 'Product Name:' });
   expect(input).toBeInTheDocument();
+});
+
+test('Adding a Product closes the Form', async () => {
+  render(
+    <Main
+      products={mockData}
+      onSubmit={vi.fn()}
+      onUpdate={vi.fn()}
+      onDelete={vi.fn()}
+      onAddToCart={vi.fn()}
+    />
+  );
+
+  const user = userEvent.setup();
+  const addAProductButton = screen.getByRole('button', {
+    name: 'Add A Product',
+  });
+  await user.click(addAProductButton);
+
+  const addButton = screen.getByRole('button', { name: 'Add' });
+  await user.click(addButton);
+
+  waitFor(() => {
+    expect(addButton).not.toBeInTheDocument();
+  });
 });

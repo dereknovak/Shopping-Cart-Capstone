@@ -8,7 +8,7 @@ interface EditFormProps {
 }
 
 const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     title: product.title,
     price: String(product.price),
     quantity: String(product.quantity),
@@ -16,13 +16,13 @@ const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
 
   const handleUpdate = (e: SyntheticEvent) => {
     e.preventDefault();
-    onUpdate(product._id, data);
+    onUpdate(product._id, formData);
     closeEditForm();
   };
 
   const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
@@ -37,7 +37,7 @@ const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
             type="text"
             id="product-name"
             name="title"
-            value={data.title}
+            value={formData.title}
             onChange={handleDataChange}
             aria-label="Product Name"
           />
@@ -49,7 +49,7 @@ const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
             type="number"
             id="product-price"
             name="price"
-            value={data.price}
+            value={formData.price}
             onChange={handleDataChange}
             aria-label="Product Price"
           />
@@ -61,7 +61,7 @@ const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
             type="number"
             id="product-quantity"
             name="quantity"
-            value={data.quantity}
+            value={formData.quantity}
             onChange={handleDataChange}
             aria-label="Product Quantity"
           />
