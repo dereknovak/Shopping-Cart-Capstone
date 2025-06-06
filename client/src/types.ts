@@ -9,14 +9,14 @@ const productSchema = z.object({
 
 export type ProductType = z.infer<typeof productSchema>;
 
-export interface FormInput {
-  title: string;
-  price: string;
-  quantity: string;
-}
-
 export type NewProduct = Omit<ProductType, '_id'>;
 export type UpdatedProduct = NewProduct;
+
+export interface FormInput {
+  title: string;
+  price: string | number;
+  quantity: string | number;
+}
 
 export type Products = ProductType[];
 
