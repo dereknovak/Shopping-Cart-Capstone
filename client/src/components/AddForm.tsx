@@ -18,6 +18,7 @@ const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     onSubmit(formData);
+    toggleVisibility();
   };
 
   const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {

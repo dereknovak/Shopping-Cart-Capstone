@@ -179,3 +179,27 @@ table td.total {
   text-align: right;
   padding-top: 20px;
 }
+
+#sorting-options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: right;
+}
+
+#sorting-options dt,
+dd {
+  margin: 0 0 10px 5px;
+}
+
+.inactive {
+  color: #07575b;
+  background-color: #c4dfe6;
+  border: 1px solid #07575b;
+}
+
+.inactive:hover {
+  color: white;
+  background-color: #07575b8a;
+}

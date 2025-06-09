@@ -29,3 +29,5 @@ export type CartType = CartItemType[];
 export interface ProductIdObject {
   productId: string;
 }
+
+export type SortType = 'newest' | 'title' | 'price' | 'quantity';

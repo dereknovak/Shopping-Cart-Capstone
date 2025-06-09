@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import './App.css';
 
 import Header from './components/Header';
@@ -12,33 +12,36 @@ import {
   getProducts,
   updateProduct,
 } from './services/products';
-import type { CartType, FormInput, ProductIdObject, Products } from './types';
-import { convertInputToProduct, isItemInCart } from './utilities/utilities';
+import type { FormInput, ProductIdObject, SortType } from './types';
+import { convertInputToProduct } from './utilities/utilities';
+import productsReducer, { ProductsAction } from './reducers/productsReducer';
+import cartReducer, { CartAction } from './reducers/cartReducer';
 
 const App = () => {
-  const [products, setProducts] = useState<Products>([]);
-  const [cart, setCart] = useState<CartType>([]);
+  const [products, dispatchProducts] = useReducer(productsReducer, []);
+  const [cart, dispatchCart] = useReducer(cartReducer, []);
+  const [productSortType, setProductsSortType] = useState<SortType>('newest');
 
   useEffect(() => {
     (async () => {
       const data = await getCart();
-      setCart(data);
+      dispatchCart(CartAction.FetchCart(data));
     })();
   }, []);
 
   useEffect(() => {
     (async () => {
       const data = await getProducts();
-      setProducts(data);
+      dispatchProducts(ProductsAction.FetchProducts(data, productSortType));
     })();
-  }, []);
+  }, [products.length, productSortType]);
 
   const handleAddFormSubmission = async (newProduct: FormInput) => {
     try {
       const cleanData = convertInputToProduct(newProduct);
       const data = await createProduct(cleanData);
 
-      setProducts((prev) => [...prev, data]);
+      dispatchProducts(ProductsAction.CreateProduct(data, productSortType));
     } catch (e) {
       console.log(e);
     }
@@ -52,9 +55,7 @@ const App = () => {
       const cleanData = convertInputToProduct(updatedProduct);
       const data = await updateProduct(productId, cleanData);
 
-      setProducts((prev) =>
-        prev.map((prod) => (prod._id === productId ? data : prod))
-      );
+      dispatchProducts(ProductsAction.UpdateProduct(data, productId));
     } catch (e) {
       console.log(e);
     }
@@ -63,7 +64,7 @@ const App = () => {
   const handleProductDelete = async (productId: string) => {
     try {
       await deleteProduct(productId);
-      setProducts((prev) => prev.filter((prod) => prod._id !== productId));
+      dispatchProducts(ProductsAction.DeleteProduct(productId));
     } catch (e) {
       console.log(e);
     }
@@ -72,7 +73,7 @@ const App = () => {
   const handleCheckout = async () => {
     try {
       await checkoutCart();
-      setCart([]);
+      dispatchCart(CartAction.CheckoutCart());
     } catch (e) {}
   };
 
@@ -81,22 +82,19 @@ const App = () => {
       const { product, item } = await addProductToCart(addedProduct);
       const productId = addedProduct.productId;
 
-      if (isItemInCart(cart, productId)) {
-        setCart((prev) =>
-          prev.map((cartItem) =>
-            cartItem.productId === productId ? item : cartItem
-          )
-        );
-      } else {
-        setCart((prev) => prev.concat(item));
-      }
-
-      setProducts((prev) =>
-        prev.map((prod) => (prod._id === productId ? product : prod))
-      );
+      dispatchCart(CartAction.AddToCart(item, productId));
+      dispatchProducts(ProductsAction.UpdateProduct(product, productId));
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const handleProductSort = (type: SortType) => {
+    setProductsSortType(type);
+  };
+
+  const isSortTypeSelected = (sortType: SortType) => {
+    return sortType === productSortType;
   };
 
   return (
@@ -108,6 +106,8 @@ const App = () => {
         onUpdate={handleProductUpdate}
         onDelete={handleProductDelete}
         onAddToCart={handleAddProductToCart}
+        onProductSort={handleProductSort}
+        isSortTypeSelected={isSortTypeSelected}
       />
     </div>
   );

@@ -1,11 +1,19 @@
 import Product from './Product';
-import type { Products, FormInput, ProductIdObject } from '../types.js';
+import {
+  type Products,
+  type FormInput,
+  type ProductIdObject,
+  type SortType,
+} from '../types.js';
+import SortingOptions from './SortingOptions.js';
 
 interface ProductListingProps {
   products: Products;
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
   onDelete: (productId: string) => Promise<void>;
   onAddToCart: (product: ProductIdObject) => Promise<void>;
+  onProductSort: (type: SortType) => void;
+  isSortTypeSelected: (sortType: SortType) => boolean;
 }
 
 const ProductListing = ({
@@ -13,10 +21,16 @@ const ProductListing = ({
   onUpdate,
   onDelete,
   onAddToCart,
+  onProductSort,
+  isSortTypeSelected,
 }: ProductListingProps) => {
   return (
     <div className="product-listing">
       <h2>Products</h2>
+      <SortingOptions
+        isSelected={isSortTypeSelected}
+        onProductSort={onProductSort}
+      />
       <ul className="product-list">
         {products.map((product) => (
           <Product

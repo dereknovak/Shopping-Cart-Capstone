@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { FormInput, ProductIdObject, Products } from '../types';
+import type { FormInput, ProductIdObject, Products, SortType } from '../types';
 import AddForm from './AddForm';
 import ProductListing from './ProductListing';
 import AddFormButton from './AddFormButton';
@@ -10,6 +10,8 @@ interface MainProps {
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
   onDelete: (productId: string) => Promise<void>;
   onAddToCart: (product: ProductIdObject) => Promise<void>;
+  onProductSort: (type: SortType) => void;
+  isSortTypeSelected: (sortType: SortType) => boolean;
 }
 
 const Main = ({
@@ -18,6 +20,8 @@ const Main = ({
   onUpdate,
   onDelete,
   onAddToCart,
+  onProductSort,
+  isSortTypeSelected,
 }: MainProps) => {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
   const toggleVisibility = () => setIsAddFormVisible(!isAddFormVisible);
@@ -29,6 +33,8 @@ const Main = ({
         onUpdate={onUpdate}
         onDelete={onDelete}
         onAddToCart={onAddToCart}
+        onProductSort={onProductSort}
+        isSortTypeSelected={isSortTypeSelected}
       />
       {isAddFormVisible ? (
         <AddForm toggleVisibility={toggleVisibility} onSubmit={onSubmit} />
