@@ -1,27 +1,60 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { getCurrentCurrencyRates } from '../services/products';
+import { getCurrencySymbol } from '../utilities/utilities';
+import type { Currency, CurrencyRates } from '../types';
 
-export const ThemeContext = createContext(null);
+interface ThemeContextType {
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
+  convertCurrency: (price: number) => string;
+  handleSelectRegion: (currency: Currency) => void;
+}
 
-const ThemeProvider = ({ children }) => {
+interface ThemeProviderProps {
+  children: any;
+}
+
+export const ThemeContext = createContext<ThemeContextType>();
+
+const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [currencyType, setCurrencyType] = useState('usd');
+  const [currencyType, setCurrencyType] = useState({
+    name: 'USD',
+    symbol: '$',
+  });
+  const [currencyRates, setCurrencyRates] = useState<CurrencyRates>({});
+
+  useEffect(() => {
+    (async () => {
+      const rates = await getCurrentCurrencyRates();
+      setCurrencyRates(rates);
+    })();
+  }, []);
+
+  const handleSelectRegion = (currency: Currency) => {
+    setCurrencyType({
+      name: currency,
+      symbol: getCurrencySymbol(currency),
+    });
+  };
 
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
-  const convertCurrency = (price) => {
-    switch (currencyType) {
-      case 'usd': {
-        return price;
-      }
-      case 'eur': {
-        return price * 1.22;
-      }
-    }
+  const convertCurrency = (price: number) => {
+    return (
+      currencyType.symbol +
+      (price * currencyRates[currencyType.name]).toFixed(2)
+    );
   };
 
   return (
     <ThemeContext
-      value={{ isDarkMode, toggleDarkMode, convertCurrency, setCurrencyType }}
+      value={{
+        isDarkMode,
+        toggleDarkMode,
+        convertCurrency,
+        handleSelectRegion,
+      }}
     >
       {children}
     </ThemeContext>

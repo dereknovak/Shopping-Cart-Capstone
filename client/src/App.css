@@ -45,13 +45,19 @@ main.dark-mode {
   background: #3d4547;
 }
 
-h2 {
+main.dark-mode h2,
+main.dark-mode dt {
   color: #fff;
+}
+
+h2 {
+  color: #07575b;
   font-size: 22px;
   margin-bottom: 10px;
 }
 
 header h2 {
+  color: #fff;
   text-align: center;
 }
 
@@ -189,6 +195,7 @@ input::-webkit-inner-spin-button {
 
 input[type='number'] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 table td,
@@ -210,8 +217,9 @@ table td.total {
   justify-content: right;
 }
 
-#sorting-options dt,
+dt,
 dd {
+  color: #07575b;
   margin: 0 0 10px 5px;
 }
 

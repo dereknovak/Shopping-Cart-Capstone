@@ -49,3 +49,10 @@ export const addProductToCart = async (productWithId: {
   const { data } = await axios.post(`${BASE_URL}/add-to-cart`, productWithId);
   return data;
 };
+
+// Currency
+
+export const getCurrentCurrencyRates = async () => {
+  const { data } = await axios.get('https://open.er-api.com/v6/latest/USD');
+  return data.rates;
+};

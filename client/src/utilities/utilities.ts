@@ -1,4 +1,10 @@
-import type { CartType, FormInput, Products, SortType } from '../types';
+import type {
+  CartType,
+  Currency,
+  FormInput,
+  Products,
+  SortType,
+} from '../types';
 
 export const convertInputToProduct = (input: FormInput) => {
   return {
@@ -37,4 +43,15 @@ export const sortProducts = (products: Products, sortType: SortType) => {
 
 export const capitalize = (text: string) => {
   return text[0].toUpperCase() + text.slice(1);
+};
+
+export const getCurrencySymbol = (currency: Currency) => {
+  const symbols = {
+    USD: '$',
+    EUR: '€',
+    CAD: '$',
+    JPY: '¥',
+  };
+
+  return symbols[currency];
 };

@@ -16,7 +16,7 @@ const Cart = ({ items, onCheckout }: CartProps) => {
       return acc + item.price * item.quantity;
     }, 0);
 
-    return convertCurrency(total).toFixed(2);
+    return convertCurrency(total);
   };
 
   return (
@@ -38,7 +38,7 @@ const Cart = ({ items, onCheckout }: CartProps) => {
         <tfoot>
           <tr>
             <td colSpan={3} className="total">
-              Total: ${totalCost()}
+              Total: {totalCost()}
             </td>
           </tr>
         </tfoot>

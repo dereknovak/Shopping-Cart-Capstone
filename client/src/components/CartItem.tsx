@@ -10,7 +10,7 @@ const CartItem = ({ title, quantity, price }: CartItemProps) => {
     <tr>
       <td>{title}</td>
       <td>{quantity}</td>
-      <td>${convertCurrency(price).toFixed(2)}</td>
+      <td>{convertCurrency(price)}</td>
     </tr>
   );
 };

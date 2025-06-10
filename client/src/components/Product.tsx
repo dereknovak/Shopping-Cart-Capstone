@@ -32,7 +32,7 @@ const Product = ({
     <li className={`product${isDarkMode ? ' dark-mode' : ''}`}>
       <div className="product-details">
         <h3>{title}</h3>
-        <p className="price">${convertCurrency(price).toFixed(2)}</p>
+        <p className="price">{convertCurrency(price)}</p>
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
           <button className="add-to-cart" onClick={handleAddToCart}>
