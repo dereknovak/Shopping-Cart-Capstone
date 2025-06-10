@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import EditForm from './EditForm';
 import type { ProductType, FormInput, ProductIdObject } from '../types';
 import { ThemeContext } from '../providers/ThemeProvider';

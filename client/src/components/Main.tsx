@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import type { FormInput, ProductIdObject, Products, SortType } from '../types';
 import AddForm from './AddForm';
 import ProductListing from './ProductListing';
