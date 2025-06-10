@@ -1,4 +1,9 @@
-import { useState, type ChangeEvent, type SyntheticEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type SyntheticEvent,
+} from 'react';
 import type { ProductType, FormInput } from '../types';
 
 interface EditFormProps {
@@ -8,11 +13,16 @@ interface EditFormProps {
 }
 
 const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
-  const [formData, setFormData] = useState({
+  const initialFormState = {
     title: product.title,
     price: String(product.price),
     quantity: String(product.quantity),
-  });
+  };
+  const [formData, setFormData] = useState(initialFormState);
+
+  useEffect(() => {
+    setFormData(initialFormState);
+  }, [product.quantity]);
 
   const handleUpdate = (e: SyntheticEvent) => {
     e.preventDefault();
