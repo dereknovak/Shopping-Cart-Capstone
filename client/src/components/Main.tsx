@@ -4,6 +4,7 @@ import AddForm from './AddForm';
 import ProductListing from './ProductListing';
 import AddFormButton from './AddFormButton';
 import { ThemeContext } from '../providers/ThemeProvider';
+import useToggle from '../hooks/useToggle';
 
 interface MainProps {
   products: Products;
@@ -24,8 +25,7 @@ const Main = ({
   onProductSort,
   isSortTypeSelected,
 }: MainProps) => {
-  const [isAddFormVisible, setIsAddFormVisible] = useState(false);
-  const toggleVisibility = () => setIsAddFormVisible(!isAddFormVisible);
+  const [isAddFormVisible, toggleAddForm] = useToggle(false);
   const { isDarkMode } = useContext(ThemeContext);
 
   return (
@@ -39,9 +39,9 @@ const Main = ({
         isSortTypeSelected={isSortTypeSelected}
       />
       {isAddFormVisible ? (
-        <AddForm toggleVisibility={toggleVisibility} onSubmit={onSubmit} />
+        <AddForm toggleVisibility={toggleAddForm} onSubmit={onSubmit} />
       ) : (
-        <AddFormButton toggleVisibility={toggleVisibility} />
+        <AddFormButton toggleVisibility={toggleAddForm} />
       )}
     </main>
   );

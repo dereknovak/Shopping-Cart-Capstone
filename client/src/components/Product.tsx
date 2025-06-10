@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import EditForm from './EditForm';
 import type { ProductType, FormInput, ProductIdObject } from '../types';
 import { ThemeContext } from '../providers/ThemeProvider';
+import useToggle from '../hooks/useToggle';
 
 interface ProductProps extends ProductType {
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
@@ -19,11 +20,8 @@ const Product = ({
   onAddToCart,
 }: ProductProps) => {
   const product = { _id, title, price, quantity };
-  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const { isDarkMode, convertCurrency } = useContext(ThemeContext);
-
-  const openEditForm = () => setIsEditFormVisible(true);
-  const closeEditForm = () => setIsEditFormVisible(false);
+  const [isFormActive, toggleEditForm] = useToggle(false);
 
   const handleDelete = () => onDelete(_id);
   const handleAddToCart = () => onAddToCart({ productId: _id });
@@ -38,7 +36,7 @@ const Product = ({
           <button className="add-to-cart" onClick={handleAddToCart}>
             Add to Cart
           </button>
-          <button className="edit" onClick={openEditForm}>
+          <button className="edit" onClick={toggleEditForm}>
             Edit
           </button>
         </div>
@@ -46,11 +44,11 @@ const Product = ({
           <span>X</span>
         </button>
 
-        {isEditFormVisible && (
+        {isFormActive && (
           <EditForm
             product={product}
             onUpdate={onUpdate}
-            closeEditForm={closeEditForm}
+            closeEditForm={toggleEditForm}
           />
         )}
       </div>

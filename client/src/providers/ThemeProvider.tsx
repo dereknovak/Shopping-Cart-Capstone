@@ -14,10 +14,24 @@ interface ThemeProviderProps {
   children: any;
 }
 
-export const ThemeContext = createContext<ThemeContextType>();
+const defaultThemeContext: ThemeContextType = {
+  isDarkMode: true,
+  toggleDarkMode: () => {
+    throw new Error('toggleDarkMode not implemented');
+  },
+  convertCurrency: () => {
+    throw new Error('convertCurrency not implemented');
+  },
+  handleSelectRegion: () => {
+    throw new Error('handleSelectRegion not implemented');
+  },
+};
+
+export const ThemeContext =
+  createContext<ThemeContextType>(defaultThemeContext);
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [currencyType, setCurrencyType] = useState({
     name: 'USD',
     symbol: '$',
