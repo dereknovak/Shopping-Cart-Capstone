@@ -6,6 +6,8 @@ import {
   type SortType,
 } from '../types.js';
 import SortingOptions from './SortingOptions.js';
+import DarkModeButton from './DarkModeButton.js';
+import CurrencySelector from './CurrencySelector.js';
 
 interface ProductListingProps {
   products: Products;
@@ -27,6 +29,8 @@ const ProductListing = ({
   return (
     <div className="product-listing">
       <h2>Products</h2>
+      <DarkModeButton />
+      <CurrencySelector />
       <SortingOptions
         isSelected={isSortTypeSelected}
         onProductSort={onProductSort}

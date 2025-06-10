@@ -25,7 +25,6 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const data = await getCart();
-      console.log(data[0]);
       dispatchCart(CartAction.FetchCart(data));
     })();
   }, []);

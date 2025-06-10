@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import EditForm from './EditForm';
 import type { ProductType, FormInput, ProductIdObject } from '../types';
+import { ThemeContext } from '../providers/ThemeProvider';
 
 interface ProductProps extends ProductType {
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
@@ -19,6 +20,7 @@ const Product = ({
 }: ProductProps) => {
   const product = { _id, title, price, quantity };
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const { isDarkMode, convertCurrency } = useContext(ThemeContext);
 
   const openEditForm = () => setIsEditFormVisible(true);
   const closeEditForm = () => setIsEditFormVisible(false);
@@ -27,10 +29,10 @@ const Product = ({
   const handleAddToCart = () => onAddToCart({ productId: _id });
 
   return (
-    <li className="product">
+    <li className={`product${isDarkMode ? ' dark-mode' : ''}`}>
       <div className="product-details">
         <h3>{title}</h3>
-        <p className="price">${price.toFixed(2)}</p>
+        <p className="price">${convertCurrency(price).toFixed(2)}</p>
         <p className="quantity">{quantity} left in stock</p>
         <div className="actions product-actions">
           <button className="add-to-cart" onClick={handleAddToCart}>

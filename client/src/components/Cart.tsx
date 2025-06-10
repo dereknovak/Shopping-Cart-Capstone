@@ -1,5 +1,7 @@
+import { useContext } from 'react';
 import type { CartItemType, CartType, ProductType } from '../types';
 import CartItem from './CartItem';
+import { ThemeContext } from '../providers/ThemeProvider';
 
 interface CartProps {
   items: CartType;
@@ -7,12 +9,14 @@ interface CartProps {
 }
 
 const Cart = ({ items, onCheckout }: CartProps) => {
+  const { convertCurrency } = useContext(ThemeContext);
+
   const totalCost = () => {
     const total = items.reduce((acc: number, item: CartItemType) => {
       return acc + item.price * item.quantity;
     }, 0);
 
-    return total.toFixed(2);
+    return convertCurrency(total).toFixed(2);
   };
 
   return (

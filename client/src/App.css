@@ -4,7 +4,7 @@
 body {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 16px;
-  color: black;
+  background: black;
 }
 
 #app {
@@ -37,10 +37,16 @@ header .cart {
 }
 
 main {
+  color: #fff;
   background: #c4dfe6;
 }
 
+main.dark-mode {
+  background: #3d4547;
+}
+
 h2 {
+  color: #fff;
   font-size: 22px;
   margin-bottom: 10px;
 }
@@ -57,12 +63,19 @@ header h2 {
   position: relative;
 }
 
+.product.dark-mode {
+  background: rgb(0, 0, 0);
+  color: #fff;
+}
+
 h3 {
+  color: #07575b;
   font-size: 18px;
   margin-bottom: 6px;
 }
 
 .product p {
+  color: #07575b;
   margin-bottom: 3px;
 }
 
@@ -79,6 +92,15 @@ h3 {
   margin-top: 20px;
   border-top: 1px solid #ccc;
   padding-top: 10px;
+}
+
+.product.dark-mode h3,
+.product.dark-mode p {
+  color: #fff;
+}
+
+.product.dark-mode .price {
+  color: #a83850;
 }
 
 .input-group {

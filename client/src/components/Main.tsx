@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import type { FormInput, ProductIdObject, Products, SortType } from '../types';
 import AddForm from './AddForm';
 import ProductListing from './ProductListing';
 import AddFormButton from './AddFormButton';
+import { ThemeContext } from '../providers/ThemeProvider';
 
 interface MainProps {
   products: Products;
@@ -25,9 +26,10 @@ const Main = ({
 }: MainProps) => {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
   const toggleVisibility = () => setIsAddFormVisible(!isAddFormVisible);
+  const { isDarkMode } = useContext(ThemeContext);
 
   return (
-    <main>
+    <main className={isDarkMode ? ' dark-mode' : ''}>
       <ProductListing
         products={products}
         onUpdate={onUpdate}
