@@ -44,6 +44,8 @@ export interface ProductIdObject {
 
 export type SortType = 'newest' | 'title' | 'price' | 'quantity';
 
+export type Theme = 'dark' | 'light';
+
 export type Currency = 'USD' | 'EUR' | 'CAD' | 'JPY';
 export interface CurrencyRates {
   [currency: string]: number;

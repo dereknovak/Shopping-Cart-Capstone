@@ -1,11 +1,10 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../providers/ThemeProvider';
+import { capitalize } from '../utilities/utilities';
 
 const DarkModeButton = () => {
-  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
-  const brightness = isDarkMode ? 'Light' : 'Dark';
-
-  return <button onClick={toggleDarkMode}>{brightness} Mode</button>;
+  const { theme, toggleTheme } = useContext(ThemeContext);
+  return <button onClick={toggleTheme}>{capitalize(theme)} Mode</button>;
 };
 
 export default DarkModeButton;

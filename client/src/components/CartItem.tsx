@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import type { CartItemType } from '../types';
-import { ThemeContext } from '../providers/ThemeProvider';
+import { CurrencyContext } from '../providers/CurrencyProvider';
 
 type CartItemProps = Omit<CartItemType, '_id' | 'productId'>;
 
 const CartItem = ({ title, quantity, price }: CartItemProps) => {
-  const { convertCurrency } = useContext(ThemeContext);
+  const { convertCurrency } = useContext(CurrencyContext);
   return (
     <tr>
       <td>{title}</td>

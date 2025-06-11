@@ -3,6 +3,7 @@ import EditForm from './EditForm';
 import type { ProductType, FormInput, ProductIdObject } from '../types';
 import { ThemeContext } from '../providers/ThemeProvider';
 import useToggle from '../hooks/useToggle';
+import { CurrencyContext } from '../providers/CurrencyProvider';
 
 interface ProductProps extends ProductType {
   onUpdate: (productId: string, updatedProduct: FormInput) => Promise<void>;
@@ -20,14 +21,15 @@ const Product = ({
   onAddToCart,
 }: ProductProps) => {
   const product = { _id, title, price, quantity };
-  const { isDarkMode, convertCurrency } = useContext(ThemeContext);
+  const { convertCurrency } = useContext(CurrencyContext);
+  const { theme } = useContext(ThemeContext);
   const [isFormActive, toggleEditForm] = useToggle(false);
 
   const handleDelete = () => onDelete(_id);
   const handleAddToCart = () => onAddToCart({ productId: _id });
 
   return (
-    <li className={`product${isDarkMode ? ' dark-mode' : ''}`}>
+    <li className={`product${theme === 'dark' ? ' dark-mode' : ''}`}>
       <div className="product-details">
         <h3>{title}</h3>
         <p className="price">{convertCurrency(price)}</p>

@@ -26,10 +26,10 @@ const Main = ({
   isSortTypeSelected,
 }: MainProps) => {
   const [isAddFormVisible, toggleAddForm] = useToggle(false);
-  const { isDarkMode } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   return (
-    <main className={isDarkMode ? ' dark-mode' : ''}>
+    <main className={theme === 'dark' ? ' dark-mode' : ''}>
       <ProductListing
         products={products}
         onUpdate={onUpdate}
