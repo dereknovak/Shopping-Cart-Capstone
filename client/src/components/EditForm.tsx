@@ -1,10 +1,6 @@
-import {
-  useEffect,
-  useState,
-  type ChangeEvent,
-  type SyntheticEvent,
-} from 'react';
+import { useEffect } from 'react';
 import type { ProductType, FormInput } from '../types';
+import { useForm } from 'react-hook-form';
 
 interface EditFormProps {
   product: ProductType;
@@ -13,44 +9,37 @@ interface EditFormProps {
 }
 
 const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
-  const initialFormState = {
-    title: product.title,
-    price: String(product.price),
-    quantity: String(product.quantity),
-  };
-  const [formData, setFormData] = useState(initialFormState);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormInput>({
+    defaultValues: product,
+  });
 
   useEffect(() => {
-    setFormData(initialFormState);
-  }, [product.quantity]);
+    reset(product);
+  }, [product.quantity, reset]);
 
-  const handleUpdate = (e: SyntheticEvent) => {
-    e.preventDefault();
-    onUpdate(product._id, formData);
+  const handleUpdate = (data: FormInput) => {
+    onUpdate(product._id, data);
     closeEditForm();
-  };
-
-  const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
-      <form onSubmit={handleUpdate}>
+      <form onSubmit={handleSubmit(handleUpdate)}>
         <div className="input-group">
           <label htmlFor="product-name">Product Name</label>
           <input
             type="text"
             id="product-name"
-            name="title"
-            value={formData.title}
-            onChange={handleDataChange}
+            {...register('title', { required: 'Product Name is required' })}
             aria-label="Product Name"
           />
+          <p>{errors.title?.message}</p>
         </div>
 
         <div className="input-group">
@@ -58,11 +47,10 @@ const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
           <input
             type="number"
             id="product-price"
-            name="price"
-            value={formData.price}
-            onChange={handleDataChange}
+            {...register('price', { required: 'Price is required' })}
             aria-label="Product Price"
           />
+          <p>{errors.price?.message}</p>
         </div>
 
         <div className="input-group">
@@ -70,11 +58,10 @@ const EditForm = ({ product, onUpdate, closeEditForm }: EditFormProps) => {
           <input
             type="number"
             id="product-quantity"
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleDataChange}
+            {...register('quantity', { required: 'Quantity is required' })}
             aria-label="Product Quantity"
           />
+          <p>{errors.quantity?.message}</p>
         </div>
 
         <div className="actions form-actions">

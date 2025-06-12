@@ -1,11 +1,5 @@
-import { useState, type ChangeEvent, type SyntheticEvent } from 'react';
+import { useForm } from 'react-hook-form';
 import type { FormInput } from '../types';
-
-export const emptyInputForm = {
-  title: '',
-  price: '',
-  quantity: '',
-};
 
 interface AddFormProps {
   toggleVisibility: () => void;
@@ -13,59 +7,54 @@ interface AddFormProps {
 }
 
 const AddForm = ({ toggleVisibility, onSubmit }: AddFormProps) => {
-  const [formData, setFormData] = useState<FormInput>(emptyInputForm);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInput>();
 
-  const handleSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
+  const handleFormSubmit = (data: FormInput) => {
+    onSubmit(data);
     toggleVisibility();
-  };
-
-  const handleDataChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
     <div className="add-form">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <div className="input-group">
           <label htmlFor="product-name">Product Name:</label>
           <input
             type="text"
             id="product-name"
-            name="title"
-            value={formData.title}
-            onChange={handleDataChange}
-            required
+            {...register('title', { required: 'Product Name is required' })}
           />
+          <p>{errors.title?.message}</p>
         </div>
         <div className="input-group">
           <label htmlFor="product-price">Price:</label>
           <input
             type="number"
             id="product-price"
-            name="price"
-            min="0"
+            {...register('price', {
+              required: 'Price is required',
+              min: { value: 0, message: 'Must be greater than 0' },
+            })}
             step="0.01"
-            value={formData.price}
-            onChange={handleDataChange}
-            required
           />
+          <p>{errors.price?.message}</p>
         </div>
         <div className="input-group">
           <label htmlFor="product-quantity">Quantity:</label>
           <input
             type="number"
             id="product-quantity"
-            name="quantity"
+            {...register('quantity', {
+              required: 'Quantity is required',
+              min: 0,
+            })}
             min="0"
-            value={formData.quantity}
-            onChange={handleDataChange}
-            required
           />
+          <p>{errors.quantity?.message}</p>
         </div>
         <div className="actions form-actions">
           <button type="submit">Add</button>
