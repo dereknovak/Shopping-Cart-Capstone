@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import './App.css';
 
 import Header from './components/Header';
@@ -16,11 +16,15 @@ import type { FormInput, ProductIdObject, SortType } from './types';
 import { convertInputToProduct } from './utilities/utilities';
 import productsReducer, { ProductsAction } from './reducers/productsReducer';
 import cartReducer, { CartAction } from './reducers/cartReducer';
+import useLocalStorage from './hooks/useLocalStorage';
 
 const App = () => {
   const [products, dispatchProducts] = useReducer(productsReducer, []);
   const [cart, dispatchCart] = useReducer(cartReducer, []);
-  const [productSortType, setProductsSortType] = useState<SortType>('newest');
+  const [productSortType, setProductSortType] = useLocalStorage(
+    'productSortType',
+    'newest'
+  );
 
   useEffect(() => {
     (async () => {
@@ -90,7 +94,7 @@ const App = () => {
   };
 
   const handleProductSort = (type: SortType) => {
-    setProductsSortType(type);
+    setProductSortType(type);
   };
 
   const isSortTypeSelected = (sortType: SortType) => {
